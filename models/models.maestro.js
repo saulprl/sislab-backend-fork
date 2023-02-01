@@ -31,6 +31,14 @@ const MaestroSchema = Schema({
     type: Boolean,
     default: true,
   },
+  fechaDeRegistro: {
+    type: String,
+    required: true
+  },
+  grupos: {
+    type: Object,
+    required: true
+  }
 });
 
 MaestroSchema.methods.toJSON = function () {

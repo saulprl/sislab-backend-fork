@@ -34,6 +34,10 @@ const AdminSchema = Schema({
     type: Boolean,
     default: true,
   },
+  fechaDeRegistro: {
+    type: String,
+    required: true
+  },
 });
 
 AdminSchema.methods.toJSON = function () {
