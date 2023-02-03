@@ -65,6 +65,25 @@ const maestrosDelete = async (req, res = response) => {
   res.json(maestro);
 };
 
+const grupoPost = async (req, res = response) => {
+  const { nombre, correo, apellidoPaterno, apellidoMaterno, password, rol } =
+    req.body;
+
+  const maestro = new Maestro({
+    nombre,
+    apellidoPaterno,
+    apellidoMaterno,
+    correo,
+    password,
+    rol,
+  });
+
+  //Guardar registro
+  await maestro.save();
+
+  res.json(maestro);
+};
+
 module.exports = {
   maestrosGet,
   maestroGet,

@@ -32,17 +32,13 @@ const MaestroSchema = Schema({
     default: true,
   },
   fechaDeRegistro: {
-    type: String,
-    required: true
+    type: Date,
+    required: true,
   },
-  grupos: {
-    type: Object,
-    required: true
-  }
 });
 
 MaestroSchema.methods.toJSON = function () {
-  const { __v, password, _id, ...maestro } = this.toObject();
+  const { __v, _id, password, ...maestro } = this.toObject();
   maestro.uid = _id;
   return maestro;
 };
