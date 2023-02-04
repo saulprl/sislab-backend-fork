@@ -35,6 +35,10 @@ const MaestroSchema = Schema({
     type: Date,
     required: true,
   },
+  grupos: {
+    type: Schema.Types.ObjectId,
+    ref: "Grupos",
+  },
 });
 
 MaestroSchema.methods.toJSON = function () {

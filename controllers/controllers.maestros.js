@@ -24,6 +24,7 @@ const maestroGet = async (req = request, res = response) => {
 const maestrosPost = async (req, res = response) => {
   const { nombre, correo, apellidoPaterno, apellidoMaterno, password, rol } =
     req.body;
+
   const maestro = new Maestro({
     nombre,
     apellidoPaterno,
@@ -65,23 +66,57 @@ const maestrosDelete = async (req, res = response) => {
   res.json(maestro);
 };
 
-const grupoPost = async (req, res = response) => {
-  const { nombre, correo, apellidoPaterno, apellidoMaterno, password, rol } =
-    req.body;
-
-  const maestro = new Maestro({
-    nombre,
-    apellidoPaterno,
-    apellidoMaterno,
-    correo,
-    password,
-    rol,
-  });
-
-  //Guardar registro
-  await maestro.save();
+const maestroGruposGet = async (req, res = response) => {
+  const { id } = req.params;
+  const maestro = await Maestro.findById({ _id: id, estado: true }).populate(
+    "grupos",
+    [
+      "laboratorio",
+      "carrera",
+      "materia",
+      "numAlumnos",
+      "numEquipos",
+      "diaSemana",
+      "horaInicial",
+      "horaFinal",
+    ]
+  );
 
   res.json(maestro);
+};
+
+const maestroGrupoPost = async (req, res = response) => {
+  const { id } = req.params;
+
+  const {
+    laboratorio,
+    carrera,
+    materia,
+    numAlumnos,
+    numEquipos,
+    diaSemana,
+    horaInicial,
+    horaFinal,
+  } = req.body;
+
+  Maestro.save((error) => {
+    if (error) {
+      res.send(error);
+    } else {
+      User.findByIdAndUpdate(
+        id,
+        { $push: { laboratorio: laboratorio } },
+        { new: true },
+        (error, user) => {
+          if (error) {
+            res.send(error);
+          } else {
+            res.send(post);
+          }
+        }
+      );
+    }
+  });
 };
 
 module.exports = {
@@ -90,4 +125,6 @@ module.exports = {
   maestrosPost,
   maestrosPut,
   maestrosDelete,
+  maestroGruposGet,
+  maestroGrupoPost,
 };

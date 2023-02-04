@@ -15,11 +15,6 @@ const {
 } = require("../helpers/db-validators");
 
 const {
-  maestrosGet,
-  maestrosPut,
-  maestrosPost,
-  maestrosDelete,
-  maestroGet,
   maestroGruposGet,
   maestroGrupoPost,
 } = require("../controllers/controllers.maestros");
@@ -27,8 +22,6 @@ const {
 const router = Router();
 
 router.get("/", maestrosGet);
-
-router.get("/grupos/", maestroGruposGet);
 
 router.get("/:id", maestroGet);
 
@@ -63,25 +56,6 @@ router.post(
     validarCampos,
   ],
   maestrosPost
-);
-
-router.post(
-  "/grupo/:id",
-  [
-    check("laboratorio", "El laboratorio es obligatorio").not().isEmpty(),
-    check("carrera", "La carrera es obligatoria").not().isEmpty(),
-    check("materia", "La materia es obligatoria").not().isEmpty(),
-    check(
-      "numAlumnos",
-      "Debe contar con por lo menos 1 alumno activo"
-    ).isLength({ min: 1 }),
-    check(
-      "numEquipos",
-      "Debe contar con por lo menos 1 equipo activo"
-    ).isLength({ min: 1 }),
-    validarCampos,
-  ],
-  maestroGrupoPost
 );
 
 router.delete(
