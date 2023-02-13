@@ -28,7 +28,7 @@ const existeUsuarioPorId = async (id) => {
 const existeGrupoPorId = async (id) => {
   const existeGrupo = await Grupo.findById(id);
   if (!existeGrupo) {
-    throw new Error(`El id de la grupo no existe ${id}`);
+    throw new Error(`El id del grupo no existe ${id}`);
   }
 };
 
