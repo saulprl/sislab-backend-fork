@@ -2,6 +2,10 @@ const { Schema, model } = require('mongoose');
 
 const GruposSchema = Schema(
   {
+    nombre: {
+      type: String,
+      required: [true, 'El nombre es obligatorio'],
+    },
     laboratorio: {
       type: String,
       required: [true, 'El laboratorio es obligatorio'],
