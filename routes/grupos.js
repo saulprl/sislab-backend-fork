@@ -52,7 +52,6 @@ router.post(
     check('diaSemana', 'El dia de la semana es obligatorio').not().isEmpty(),
     check('horaInicial', 'La hora inicial es obligatoria').not().isEmpty(),
     check('horaFinal', 'La hora fianl es obligatoria').not().isEmpty(),
-    check('grupos', 'No es un id de Mongo').isMongoId(),
     check('grupos').custom(existeGrupoPorId),
     validarCampos,
   ],
