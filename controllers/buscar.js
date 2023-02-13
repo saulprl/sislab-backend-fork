@@ -1,8 +1,8 @@
 const { response } = require('express');
 const { ObjectId } = require('mongoose').Types;
-const { Usuario, Categoria, Producto } = require('../models');
+const { Usuario, Grupo, Producto } = require('../models');
 
-const coleccionesPermitidas = ['usuarios', 'categorias', 'productos', 'roles'];
+const coleccionesPermitidas = ['usuarios', 'grupos', 'productos', 'roles'];
 
 const buscarUsuarios = async (termino = '', res = response) => {
   const esMongoID = ObjectId.isValid(termino); // True
@@ -26,28 +26,25 @@ const buscarUsuarios = async (termino = '', res = response) => {
   });
 };
 
-const buscarCategorias = async (termino = '', res = response) => {
+const buscarGrupos = async (termino = '', res = response) => {
   const esMongoID = ObjectId.isValid(termino); // True
 
   if (esMongoID) {
-    const categoria = await Categoria.findById(termino).populate(
-      'usuario',
-      'nombre'
-    );
+    const grupo = await Grupo.findById(termino).populate('usuario', 'nombre');
     return res.json({
-      results: categoria ? [categoria] : [],
+      results: grupo ? [grupo] : [],
     });
   }
 
   const regex = new RegExp(termino, 'i');
 
-  const categorias = await Categoria.find({
+  const grupos = await Grupo.find({
     $or: [{ nombre: regex }],
     $and: [{ estado: true }],
   }).populate('usuario', 'nombre');
 
   res.json({
-    results: categorias,
+    results: grupos,
   });
 };
 
@@ -56,7 +53,7 @@ const buscarProductos = async (termino = '', res = response) => {
 
   if (esMongoID) {
     const producto = await Producto.findById(termino).populate(
-      'categoria',
+      'grupo',
       'nombre'
     );
     return res.json({
@@ -69,7 +66,7 @@ const buscarProductos = async (termino = '', res = response) => {
   const productos = await Producto.find({
     $or: [{ nombre: regex }],
     $and: [{ estado: true }],
-  }).populate('categoria', 'nombre');
+  }).populate('grupo', 'nombre');
 
   res.json({
     results: productos,
@@ -90,8 +87,8 @@ const buscar = (req, res = response) => {
       buscarUsuarios(termino, res);
       break;
 
-    case 'categorias':
-      buscarCategorias(termino, res);
+    case 'grupos':
+      buscarGrupos(termino, res);
       break;
 
     case 'productos':
