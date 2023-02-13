@@ -1,38 +1,49 @@
-const Role = require("../models/models.role");
-const Admin = require("../models/models.admin");
-const Maestro = require("../models/models.maestro");
+const Role = require("../models/role");
+const Usuario = require("../models/usuario");
+const Producto = require("../models/producto");
+const Categoria = require("../models/categoria");
 
 const esRoleValido = async (rol = "") => {
   const existeRol = await Role.findOne({ rol });
-  if (!existeRol) throw new Error(`El rol ${rol} no esta registrado en la BD`);
+  if (!existeRol) {
+    throw new Error(`El rol ${rol} no está registrado en la BD`);
+  }
 };
 
 const emailExiste = async (correo = "") => {
-  const existeEmail = await Admin.findOne({ correo });
-  if (existeEmail)
-    throw new Error(`El correo ${correo} ya esta registrado en la BD`);
+  // Verificar si el correo existe
+  const existeEmail = await Usuario.findOne({ correo });
+  if (existeEmail) {
+    throw new Error(`El correo: ${correo}, ya está registrado`);
+  }
 };
 
-const existeAdminPorId = async (id) => {
-  const existeAdmin = await Admin.findById(id);
-  if (!existeAdmin) throw new Error(`El id: ${id} no existe en la BD`);
+const existeUsuarioPorId = async (id) => {
+  // Verificar si el correo existe
+  const existeUsuario = await Usuario.findById(id);
+  if (!existeUsuario) {
+    throw new Error(`El id no existe ${id}`);
+  }
 };
 
-const emailMaestroExiste = async (correo = "") => {
-  const existeEmail = await Maestro.findOne({ correo });
-  if (existeEmail)
-    throw new Error(`El correo ${correo} ya esta registrado en la BD`);
+const existeCategoriaPorId = async (id) => {
+  const existeCategoria = await Categoria.findById(id);
+  if (!existeCategoria) {
+    throw new Error(`El id de la categoria no existe ${id}`);
+  }
 };
 
-const existeMaestroPorId = async (id) => {
-  const existeAdmin = await Maestro.findById(id);
-  if (!existeAdmin) throw new Error(`El id: ${id} no existe en la BD`);
+const existeProductoPorId = async (id) => {
+  const existeProducto = await Producto.findById(id);
+  if (!existeProducto) {
+    throw new Error(`El id del producto no existe ${id}`);
+  }
 };
 
 module.exports = {
   esRoleValido,
   emailExiste,
-  existeAdminPorId,
-  emailMaestroExiste,
-  existeMaestroPorId,
+  existeUsuarioPorId,
+  existeCategoriaPorId,
+  existeProductoPorId,
 };

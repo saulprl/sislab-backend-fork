@@ -1,0 +1,88 @@
+const { response } = require('express');
+const { Grupo } = require('../models');
+
+// obtenerGrupos - paginado - total - populate
+const obtenerGrupos = async (req = request, res = response) => {
+  const { limite = 5, desde = 0 } = req.query;
+  const query = { estado: true };
+
+  const [total, grupos] = await Promise.all([
+    Grupo.countDocuments(query),
+    Grupo.find(query)
+      .populate('usuario', 'nombre')
+      .skip(Number(desde))
+      .limit(Number(limite)),
+  ]);
+
+  res.json({
+    total,
+    grupos,
+  });
+};
+
+// obtenergrupo - populate {}
+
+const obtenerGrupo = async (req, res = response) => {
+  const { id } = req.params;
+
+  const grupo = await Grupo.findById(id).populate('usuario', 'nombre');
+
+  res.json(grupo);
+};
+
+const crearGrupo = async (req, res = response) => {
+  const nombre = req.body.nombre.toUpperCase();
+
+  const grupoDB = await Grupo.findOne({ nombre });
+
+  if (grupoDB) {
+    return res.status(400).json({
+      msg: `la grupo ${grupoDB.nombre}, ya existe`,
+    });
+  }
+
+  //Generar data a guardar
+  const data = {
+    nombre,
+    usuario: req.usuario._id,
+  };
+
+  const grupo = new Grupo(data);
+
+  //Guardar en DB
+  await grupo.save();
+
+  res.status(200).json(grupo);
+};
+
+const actualizarGrupo = async (req, res = response) => {
+  const { id } = req.params;
+  const { estado, usuario, ...data } = req.body;
+
+  data.nombre = data.nombre.toUpperCase();
+
+  data.usuario = req.usuario._id;
+
+  const grupo = await Grupo.findByIdAndUpdate(id, data, { new: true });
+
+  res.json(grupo);
+};
+
+const borrarGrupo = async (req, res = response) => {
+  const { id } = req.params;
+  const grupoBorrada = await Grupo.findByIdAndUpdate(
+    id,
+    { estado: false },
+    { new: true }
+  );
+
+  res.json(grupoBorrada);
+};
+
+module.exports = {
+  obtenerGrupo,
+  obtenerGrupos,
+  crearGrupo,
+  actualizarGrupo,
+  borrarGrupo,
+};

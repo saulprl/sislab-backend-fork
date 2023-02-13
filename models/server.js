@@ -1,25 +1,27 @@
-const express = require("express");
-const cors = require("cors");
-const { dbConnection } = require("../database/config");
+const express = require('express');
+const cors = require('cors');
+
+const { dbConnection } = require('../database/config');
 
 class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
 
-    //Rutas
-    this.adminsPath = "/api/admins";
-    this.maestrosPath = "/api/maestros";
-    this.adminsAuthPath = "/api/admins/auth";
-    this.maestrosAuthPath = "/api/maestros/auth";
+    this.paths = {
+      auth: '/api/auth',
+      buscar: '/api/buscar',
+      grupos: '/api/grupos',
+      usuarios: '/api/usuarios',
+    };
 
-    //Conectar a base de datos
+    // Conectar a base de datos
     this.conectarDB();
 
-    //Middlewares
+    // Middlewares
     this.middlewares();
 
-    //Rutas de mi aplicacion
+    // Rutas de mi aplicación
     this.routes();
   }
 
@@ -28,29 +30,26 @@ class Server {
   }
 
   middlewares() {
-    //CORS
+    // CORS
     this.app.use(cors());
 
-    //Lectura y parseo del body
+    // Lectura y parseo del body
     this.app.use(express.json());
 
-    //Directorio Publico
-    this.app.use(express.static("public"));
+    // Directorio Público
+    this.app.use(express.static('public'));
   }
 
   routes() {
-    this.app.use(this.adminsAuthPath, require("../routes/admins.auth.routes"));
-    this.app.use(
-      this.maestrosAuthPath,
-      require("../routes/maestros.auth.routes")
-    );
-    this.app.use(this.adminsPath, require("../routes/admins.routes"));
-    this.app.use(this.maestrosPath, require("../routes/maestros.routes"));
+    this.app.use(this.paths.auth, require('../routes/auth'));
+    this.app.use(this.paths.usuarios, require('../routes/usuarios'));
+    this.app.use(this.paths.grupos, require('../routes/grupos'));
+    this.app.use(this.paths.buscar, require('../routes/buscar'));
   }
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log("Servidor corriendo en puerto", this.port);
+      console.log('Servidor corriendo en puerto', this.port);
     });
   }
 }
