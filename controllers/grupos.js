@@ -31,19 +31,27 @@ const obtenerGrupo = async (req, res = response) => {
 };
 
 const crearGrupo = async (req, res = response) => {
-  const nombre = req.body.nombre.toUpperCase();
-
-  const grupoDB = await Grupo.findOne({ nombre });
-
-  if (grupoDB) {
-    return res.status(400).json({
-      msg: `el grupo ${grupoDB.nombre}, ya existe`,
-    });
-  }
+  const {
+    laboratorio,
+    carrera,
+    materia,
+    numAlumnos,
+    numEquipos,
+    diaSemana,
+    horaInicial,
+    horaFinal,
+  } = req.body;
 
   //Generar data a guardar
   const data = {
-    nombre,
+    laboratorio,
+    carrera,
+    materia,
+    numAlumnos,
+    numEquipos,
+    diaSemana,
+    horaInicial,
+    horaFinal,
     usuario: req.usuario._id,
   };
 

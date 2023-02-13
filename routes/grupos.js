@@ -35,8 +35,8 @@ router.post(
   [
     validarJWT,
     check('laboratorio', 'El laboratorio es obligatorio').not().isEmpty(),
-    check('carrera', 'La carrera es obligatorio').not().isEmpty(),
-    check('materia', 'La materia es obligatorio').not().isEmpty(),
+    check('carrera', 'La carrera es obligatoria').not().isEmpty(),
+    check('materia', 'La materia es obligatoria').not().isEmpty(),
     check(
       'numAlumnos',
       'El numero de alumnos tiene que ser mayor que uno'
