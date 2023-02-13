@@ -1,8 +1,8 @@
 const { response } = require('express');
 const { ObjectId } = require('mongoose').Types;
-const { Usuario, Grupo, Producto } = require('../models');
+const { Usuario, Grupo } = require('../models');
 
-const coleccionesPermitidas = ['usuarios', 'grupos', 'productos', 'roles'];
+const coleccionesPermitidas = ['usuarios', 'grupos'];
 
 const buscarUsuarios = async (termino = '', res = response) => {
   const esMongoID = ObjectId.isValid(termino); // True
@@ -48,31 +48,6 @@ const buscarGrupos = async (termino = '', res = response) => {
   });
 };
 
-const buscarProductos = async (termino = '', res = response) => {
-  const esMongoID = ObjectId.isValid(termino); // True
-
-  if (esMongoID) {
-    const producto = await Producto.findById(termino).populate(
-      'grupo',
-      'nombre'
-    );
-    return res.json({
-      results: producto ? [producto] : [],
-    });
-  }
-
-  const regex = new RegExp(termino, 'i');
-
-  const productos = await Producto.find({
-    $or: [{ nombre: regex }],
-    $and: [{ estado: true }],
-  }).populate('grupo', 'nombre');
-
-  res.json({
-    results: productos,
-  });
-};
-
 const buscar = (req, res = response) => {
   const { coleccion, termino } = req.params;
 
@@ -89,10 +64,6 @@ const buscar = (req, res = response) => {
 
     case 'grupos':
       buscarGrupos(termino, res);
-      break;
-
-    case 'productos':
-      buscarProductos(termino, res);
       break;
 
     default:
