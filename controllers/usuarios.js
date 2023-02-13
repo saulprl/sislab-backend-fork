@@ -3,6 +3,14 @@ const bcryptjs = require('bcryptjs');
 
 const Usuario = require('../models/usuario');
 
+const usuarioGet = async (req, res = response) => {
+  const { id } = req.params;
+
+  const usuario = await Usuario.findById(id);
+
+  res.json(usuario);
+};
+
 const usuariosGet = async (req = request, res = response) => {
   const { limite = 5, desde = 0 } = req.query;
   const query = { estado: true };
@@ -71,6 +79,7 @@ const usuariosDelete = async (req, res = response) => {
 };
 
 module.exports = {
+  usuarioGet,
   usuariosGet,
   usuariosPost,
   usuariosPut,

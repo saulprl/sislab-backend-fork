@@ -15,6 +15,7 @@ const {
 } = require('../helpers/db-validators');
 
 const {
+  usuarioGet,
   usuariosGet,
   usuariosPut,
   usuariosPost,
@@ -23,6 +24,8 @@ const {
 } = require('../controllers/usuarios');
 
 const router = Router();
+
+router.get('/:id', usuarioGet);
 
 router.get('/', usuariosGet);
 
