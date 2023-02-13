@@ -33,7 +33,7 @@ const obtenerGrupo = async (req, res = response) => {
 const crearGrupo = async (req, res = response) => {
   const { nombre = req.body.nombre.toUpperCase(), ...body } = req.body;
 
-  const grupoDB = await Categoria.findOne({ nombre });
+  const grupoDB = await Grupo.findOne({ nombre });
 
   if (grupoDB) {
     return res.status(400).json({
