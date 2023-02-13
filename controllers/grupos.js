@@ -37,7 +37,7 @@ const crearGrupo = async (req, res = response) => {
 
   if (grupoDB) {
     return res.status(400).json({
-      msg: `la grupo ${grupoDB.nombre}, ya existe`,
+      msg: `el grupo ${grupoDB.nombre}, ya existe`,
     });
   }
 
