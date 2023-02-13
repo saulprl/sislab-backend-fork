@@ -25,7 +25,15 @@ const {
 
 const router = Router();
 
-router.get('/:id', usuarioGet);
+router.get(
+  '/:id',
+  [
+    check('id', 'No es un ID válido').isMongoId(),
+    check('id').custom(existeUsuarioPorId),
+    validarCampos,
+  ],
+  usuarioGet
+);
 
 router.get('/', usuariosGet);
 
