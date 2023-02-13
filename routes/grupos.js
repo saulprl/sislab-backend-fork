@@ -9,10 +9,7 @@ const {
   borrarGrupo,
 } = require('../controllers/grupos');
 
-const {
-  existeGrupoPorId,
-  existeCategoriaPorId,
-} = require('../helpers/db-validators');
+const { existeGrupoPorId } = require('../helpers/db-validators');
 
 const { validarJWT, validarCampos } = require('../middlewares');
 
@@ -37,9 +34,26 @@ router.post(
   '/',
   [
     validarJWT,
-    check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('categoria', 'No es un id de Mongo').isMongoId(),
-    check('categoria').custom(existeCategoriaPorId),
+    check('laboratorio', 'El laboratorio es obligatorio').not().isEmpty(),
+    check('carrera', 'La carrera es obligatorio').not().isEmpty(),
+    check('materia', 'La materia es obligatorio').not().isEmpty(),
+    check(
+      'numAlumnos',
+      'El numero de alumnos tiene que ser mayor que uno'
+    ).isLength({
+      min: 1,
+    }),
+    check(
+      'numEquipos',
+      'El numero de equipos tiene que ser mayor que uno'
+    ).isLength({
+      min: 1,
+    }),
+    check('diaSemana', 'El dia de la semana es obligatorio').not().isEmpty(),
+    check('horaInicial', 'La hora inicial es obligatoria').not().isEmpty(),
+    check('horaFinal', 'La hora fianl es obligatoria').not().isEmpty(),
+    check('grupos', 'No es un id de Mongo').isMongoId(),
+    check('grupos').custom(existeGrupoPorId),
     validarCampos,
   ],
   crearGrupo
