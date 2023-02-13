@@ -32,7 +32,6 @@ const obtenerGrupo = async (req, res = response) => {
 
 const crearGrupo = async (req, res = response) => {
   const {
-    nombre = req.body.nombre.toUpperCase(),
     laboratorio,
     carrera,
     materia,
@@ -42,6 +41,8 @@ const crearGrupo = async (req, res = response) => {
     horaInicial,
     horaFinal,
   } = req.body;
+
+  const nombre = req.body.nombre.toUpperCase();
 
   const grupoDB = await Grupo.findOne({ nombre });
 
@@ -53,7 +54,7 @@ const crearGrupo = async (req, res = response) => {
 
   //Generar data a guardar
   const data = {
-    nombre,
+    nombre.toUpperCase(),
     laboratorio,
     carrera,
     materia,
