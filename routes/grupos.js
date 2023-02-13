@@ -51,7 +51,7 @@ router.post(
     }),
     check('diaSemana', 'El dia de la semana es obligatorio').not().isEmpty(),
     check('horaInicial', 'La hora inicial es obligatoria').not().isEmpty(),
-    check('horaFinal', 'La hora fianl es obligatoria').not().isEmpty(),
+    check('horaFinal', 'La hora final es obligatoria').not().isEmpty(),
     check('grupos').custom(existeGrupoPorId),
     validarCampos,
   ],
