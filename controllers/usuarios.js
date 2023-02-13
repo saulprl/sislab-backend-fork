@@ -1,7 +1,7 @@
-const { response, request } = require("express");
-const bcryptjs = require("bcryptjs");
+const { response, request } = require('express');
+const bcryptjs = require('bcryptjs');
 
-const Usuario = require("../models/usuario");
+const Usuario = require('../models/usuario');
 
 const usuariosGet = async (req = request, res = response) => {
   const { limite = 5, desde = 0 } = req.query;
@@ -19,8 +19,16 @@ const usuariosGet = async (req = request, res = response) => {
 };
 
 const usuariosPost = async (req, res = response) => {
-  const { nombre, correo, password, rol } = req.body;
-  const usuario = new Usuario({ nombre, correo, password, rol });
+  const { nombre, apellidoMaterno, apellidoPaterno, correo, password, rol } =
+    req.body;
+  const usuario = new Usuario({
+    nombre,
+    apellidoMaterno,
+    apellidoPaterno,
+    correo,
+    password,
+    rol,
+  });
 
   // Encriptar la contraseña
   const salt = bcryptjs.genSaltSync();
@@ -51,7 +59,7 @@ const usuariosPut = async (req, res = response) => {
 
 const usuariosPatch = (req, res = response) => {
   res.json({
-    msg: "patch API - usuariosPatch",
+    msg: 'patch API - usuariosPatch',
   });
 };
 
