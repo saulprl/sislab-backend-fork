@@ -54,7 +54,7 @@ const crearGrupo = async (req, res = response) => {
 
   //Generar data a guardar
   const data = {
-    nombre.toUpperCase(),
+    nombre,
     laboratorio,
     carrera,
     materia,
