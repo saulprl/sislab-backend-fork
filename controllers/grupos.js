@@ -67,8 +67,6 @@ const actualizarGrupo = async (req, res = response) => {
   const { id } = req.params;
   const { estado, usuario, ...data } = req.body;
 
-  data.nombre = data.nombre.toUpperCase();
-
   data.usuario = req.usuario._id;
 
   const grupo = await Grupo.findByIdAndUpdate(id, data, { new: true });
@@ -78,13 +76,14 @@ const actualizarGrupo = async (req, res = response) => {
 
 const borrarGrupo = async (req, res = response) => {
   const { id } = req.params;
-  const grupoBorrada = await Grupo.findByIdAndUpdate(
+
+  const grupoBorrado = await Grupo.findByIdAndUpdate(
     id,
     { estado: false },
     { new: true }
   );
 
-  res.json(grupoBorrada);
+  res.json(grupoBorrado);
 };
 
 module.exports = {
