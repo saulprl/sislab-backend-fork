@@ -7,10 +7,6 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
-    this.corsOrigin = corsOrigin = {
-      origin: "http://localhost:3000",
-      optionSuccessStatus: 200,
-    };
 
     this.paths = {
       auth: "/api/auth",
@@ -35,7 +31,7 @@ class Server {
 
   middlewares() {
     // CORS
-    this.app.use(cors(corsOrigin));
+    this.app.use(cors());
 
     // Lectura y parseo del body
     this.app.use(express.json());

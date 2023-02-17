@@ -22,7 +22,7 @@
     {
       "headers": [
         {
-          "source": "/index.js",
+          "src": "/index.js",
           "headers": [
             { "key": "Access-Control-Allow-Credentials", "value": "true" },
             { "key": "Access-Control-Allow-Origin", "value": "*" },
