@@ -62,7 +62,6 @@ router.post(
 router.put(
   '/:id',
   [
-    validarJWT,
     check('id', 'No es un id de Mongo valido').isMongoId(),
     check('id').custom(existeGrupoPorId),
     validarCampos,
