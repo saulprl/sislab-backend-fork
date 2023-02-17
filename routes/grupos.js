@@ -1,5 +1,5 @@
-const { Router } = require("express");
-const { check } = require("express-validator");
+const { Router } = require('express');
+const { check } = require('express-validator');
 
 const {
   crearGrupo,
@@ -7,31 +7,31 @@ const {
   obtenerGrupo,
   actualizarGrupo,
   borrarGrupo,
-} = require("../controllers/grupos");
+} = require('../controllers/grupos');
 
-const { existeGrupoPorId } = require("../helpers/db-validators");
+const { existeGrupoPorId } = require('../helpers/db-validators');
 
-const { validarJWT, validarCampos } = require("../middlewares");
+const { validarJWT, validarCampos } = require('../middlewares');
 
 const router = Router();
 
 // Obtener todas las grupos - publico
-router.get("/", obtenerGrupos);
+router.get('/', obtenerGrupos);
 
 // Obtener una grupo por id - publico
 router.get(
-  "/:id",
+  '/:id',
   [
-    check("id", "No es un id de Mongo valido").isMongoId(),
+    check('id', 'No es un id de Mongo valido').isMongoId(),
     validarCampos,
-    check("id").custom(existeGrupoPorId),
+    check('id').custom(existeGrupoPorId),
   ],
   obtenerGrupo
 );
 
 // Crear grupo - privado - cualquiera con token valido
 router.post(
-  "/",
+  '/',
   [
     validarJWT,
     check("nombre", "El nombre del grupo es obligatorio").not().isEmpty(),
@@ -39,20 +39,20 @@ router.post(
     check("carrera", "La carrera es obligatoria").not().isEmpty(),
     check("materia", "La materia es obligatoria").not().isEmpty(),
     check(
-      "numAlumnos",
-      "El numero de alumnos tiene que ser mayor que uno"
+      'numAlumnos',
+      'El numero de alumnos tiene que ser mayor que uno'
     ).isLength({
       min: 1,
     }),
     check(
-      "numEquipos",
-      "El numero de equipos tiene que ser mayor que uno"
+      'numEquipos',
+      'El numero de equipos tiene que ser mayor que uno'
     ).isLength({
       min: 1,
     }),
-    check("diaSemana", "El dia de la semana es obligatorio").not().isEmpty(),
-    check("horaInicial", "La hora inicial es obligatoria").not().isEmpty(),
-    check("horaFinal", "La hora final es obligatoria").not().isEmpty(),
+    check('diaSemana', 'El dia de la semana es obligatorio').not().isEmpty(),
+    check('horaInicial', 'La hora inicial es obligatoria').not().isEmpty(),
+    check('horaFinal', 'La hora final es obligatoria').not().isEmpty(),
     validarCampos,
   ],
   crearGrupo
@@ -60,11 +60,16 @@ router.post(
 
 // Actualizar una grupo - privado - cualquiera con token valido
 router.put(
-  "/:id",
+  '/:id',
   [
     validarJWT,
+<<<<<<< HEAD
     check("id", "No es un id de Mongo valido").isMongoId(),
     check("id").custom(existeGrupoPorId),
+=======
+    check('id', 'No es un id de Mongo valido').isMongoId(),
+    check('id').custom(existeGrupoPorId),
+>>>>>>> bcac27e7f74dd355a9dd29a149cbb2538d8bda49
     validarCampos,
   ],
   actualizarGrupo
@@ -72,11 +77,11 @@ router.put(
 
 // Eliminar una grupo - privado - cualquiera con token valido
 router.delete(
-  "/:id",
+  '/:id',
   [
     validarJWT,
-    check("id", "No es un id de Mongo valido").isMongoId(),
-    check("id").custom(existeGrupoPorId),
+    check('id', 'No es un id de Mongo valido').isMongoId(),
+    check('id').custom(existeGrupoPorId),
     validarCampos,
   ],
   borrarGrupo
