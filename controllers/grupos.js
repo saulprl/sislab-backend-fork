@@ -1,5 +1,5 @@
-const { response } = require('express');
-const { Grupo } = require('../models');
+const { response } = require("express");
+const { Grupo } = require("../models");
 
 // obtenerGrupos - paginado - total - populate
 const obtenerGrupos = async (req = request, res = response) => {
@@ -9,7 +9,7 @@ const obtenerGrupos = async (req = request, res = response) => {
   const [total, grupos] = await Promise.all([
     Grupo.countDocuments(query),
     Grupo.find(query)
-      .populate('usuario', 'nombre')
+      .populate("usuario", "nombre")
       .skip(Number(desde))
       .limit(Number(limite)),
   ]);
@@ -25,12 +25,14 @@ const obtenerGrupos = async (req = request, res = response) => {
 const obtenerGrupo = async (req, res = response) => {
   const { id } = req.params;
 
-  const grupo = await Grupo.findById(id).populate('usuario', 'nombre');
+  const grupo = await Grupo.findById(id).populate("usuario", "nombre");
 
   res.json(grupo);
 };
 
 const crearGrupo = async (req, res = response) => {
+  res.header("Access-Control-Allow-Origin", "*");
+
   const {
     laboratorio,
     carrera,
