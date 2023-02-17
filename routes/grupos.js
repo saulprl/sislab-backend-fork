@@ -33,6 +33,7 @@ router.get(
 router.post(
   "/",
   [
+    validarJWT,
     check("nombre", "El nombre del grupo es obligatorio").not().isEmpty(),
     check("laboratorio", "El laboratorio es obligatorio").not().isEmpty(),
     check("carrera", "La carrera es obligatoria").not().isEmpty(),
@@ -61,6 +62,7 @@ router.post(
 router.put(
   "/:id",
   [
+    validarJWT,
     check("id", "No es un id de Mongo valido").isMongoId(),
     check("id").custom(existeGrupoPorId),
     validarCampos,
