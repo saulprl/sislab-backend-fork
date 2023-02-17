@@ -31,8 +31,6 @@ const obtenerGrupo = async (req, res = response) => {
 };
 
 const crearGrupo = async (req, res = response) => {
-  res.header("Access-Control-Allow-Origin", "*");
-
   const {
     laboratorio,
     carrera,
