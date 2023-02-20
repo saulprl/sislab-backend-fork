@@ -22,7 +22,7 @@ const obtenerGrupos = async (req = request, res = response) => {
 
 // obtenergrupo - populate {}
 
-const obtenerGrupo = async (req, res = response) => {
+const obtenerGrupo = async (req, res) => {
   const { id } = req.params;
 
   const grupo = await Grupo.findById(id).populate("usuario", "nombre");
@@ -30,7 +30,7 @@ const obtenerGrupo = async (req, res = response) => {
   res.json(grupo);
 };
 
-const crearGrupo = async (req, res = response) => {
+const crearGrupo = async (req, res) => {
   const {
     laboratorio,
     carrera,
