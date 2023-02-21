@@ -1,0 +1,6 @@
+# Ignorar node_modules para evitar que el repositorio pese tanto
+/node_modules
+
+# Considerar ignorar .env por seguridad. Cualquier persona que entre al repo puede ver
+# las direcciones, keys y secrets.
+# .env
