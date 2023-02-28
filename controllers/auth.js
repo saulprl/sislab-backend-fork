@@ -1,5 +1,6 @@
 const { response } = require("express");
 const bcryptjs = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const Usuario = require("../models/usuario");
 
@@ -33,11 +34,18 @@ const login = async (req, res) => {
     }
 
     // Generar el JWT
-    const { token, expiresIn } = await generarJWT(usuario.id);
+    const { token: accessToken, expiresIn } = await generarJWT(usuario.id);
+
+    const refreshToken = jwt.sign(
+      { uid: usuario.id },
+      process.env.REFRESH_TOKEN_SECRET,
+      { expiresIn: "24h" }
+    );
 
     res.status(200).json({
       usuario,
-      token,
+      accessToken,
+      refreshToken,
       expiresIn,
     });
   } catch (error) {
@@ -48,6 +56,41 @@ const login = async (req, res) => {
   }
 };
 
+const refreshToken = async (req, res) => {
+  let { refreshToken } = req.body;
+
+  if (!refreshToken) {
+    return res.status(400).json({
+      msg: "No se encontró un token de revalidación.",
+    });
+  }
+
+  const { payload } = jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      complete: true,
+    }
+  );
+
+  const { token: accessToken, expiresIn } = await generarJWT(payload.uid);
+
+  refreshToken = jwt.sign(
+    { uid: payload.uid },
+    process.env.REFRESH_TOKEN_SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
+
+  return res.status(200).json({
+    accessToken,
+    refreshToken,
+    expiresIn,
+  });
+};
+
 module.exports = {
   login,
+  refreshToken,
 };
