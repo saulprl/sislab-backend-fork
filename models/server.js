@@ -1,7 +1,7 @@
-const express = require("express");
-const cors = require("cors");
+const express = require('express');
+const cors = require('cors');
 
-const { dbConnection } = require("../database/config");
+const { dbConnection } = require('../database/config');
 
 class Server {
   constructor() {
@@ -9,10 +9,10 @@ class Server {
     this.port = process.env.PORT;
 
     this.paths = {
-      auth: "/api/auth",
-      buscar: "/api/buscar",
-      grupos: "/api/grupos",
-      usuarios: "/api/usuarios",
+      auth: '/api/auth',
+      buscar: '/api/buscar',
+      grupos: '/api/grupos',
+      usuarios: '/api/usuarios',
     };
 
     // Conectar a base de datos
@@ -31,25 +31,30 @@ class Server {
 
   middlewares() {
     // CORS
-    this.app.use(cors());
+    this.app.use(
+      cors({
+        credentials: true,
+        origin: 'http://localhost:3000',
+      })
+    );
 
     // Lectura y parseo del body
     this.app.use(express.json());
 
     // Directorio Público
-    this.app.use(express.static("public"));
+    this.app.use(express.static('public'));
   }
 
   routes() {
-    this.app.use(this.paths.auth, require("../routes/auth"));
-    this.app.use(this.paths.usuarios, require("../routes/usuarios"));
-    this.app.use(this.paths.grupos, require("../routes/grupos"));
-    this.app.use(this.paths.buscar, require("../routes/buscar"));
+    this.app.use(this.paths.auth, require('../routes/auth'));
+    this.app.use(this.paths.usuarios, require('../routes/usuarios'));
+    this.app.use(this.paths.grupos, require('../routes/grupos'));
+    this.app.use(this.paths.buscar, require('../routes/buscar'));
   }
 
   listen() {
     this.app.listen(this.port, () => {
-      console.log("Servidor corriendo en puerto", this.port);
+      console.log('Servidor corriendo en puerto', this.port);
     });
   }
 }
