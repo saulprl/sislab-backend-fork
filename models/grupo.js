@@ -18,25 +18,21 @@ const GruposSchema = Schema(
       type: String,
       required: [true, 'La materia es obligatorio'],
     },
-    numAlumnos: {
+    alumnos: {
       type: Number,
       required: [true, 'El numero de alumnos es obligatorio'],
     },
-    numEquipos: {
+    equipos: {
       type: Number,
       required: [true, 'El numero de equipos obligatorio'],
     },
-    diaSemana: {
+    dia: {
       type: String,
       required: [true, 'El dia de la semana es obligatorio'],
     },
-    horaInicial: {
+    hora: {
       type: String,
       required: [true, 'La hora inicial es obligatoria'],
-    },
-    horaFinal: {
-      type: String,
-      required: [true, 'La hora final es obligatoria'],
     },
     estado: {
       type: Boolean,
