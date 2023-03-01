@@ -38,10 +38,10 @@ router.post(
     check('laboratorio', 'El laboratorio es obligatorio').not().isEmpty(),
     check('carrera', 'La carrera es obligatoria').not().isEmpty(),
     check('materia', 'La materia es obligatoria').not().isEmpty(),
-    check('alumnos', 'El numero de alumnos tiene que ser mayor que uno')
+    check('alumnos', 'El numero de alumnos tiene que ser por lo menos de uno')
       .notEmpty()
       .isInt({ min: 1, max: 30 }),
-    check('equipos', 'El numero de equipos tiene que ser mayor que uno')
+    check('equipos', 'El numero de equipos tiene que ser por lo menos de uno')
       .notEmpty()
       .isInt({ min: 1, max: 30 }),
     check('dia', 'El dia de la semana es obligatorio').not().isEmpty(),
