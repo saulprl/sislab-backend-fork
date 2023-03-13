@@ -2,6 +2,7 @@ const { Schema, model } = require('mongoose');
 
 const GruposSchema = Schema(
   {
+    _id: String,
     nombre: {
       type: String,
       required: [true, 'El nombre es obligatorio'],
