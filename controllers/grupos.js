@@ -21,9 +21,22 @@ const obtenerGrupos = async (req = request, res = response) => {
 const obtenerGrupo = async (req, res = response) => {
   const { id } = req.params;
 
-  const grupo = Grupo.findById({ _id: id }); // busca todos los posts con una referencia al usuario
-
-  res.status(200).json(grupo);
+  const grupo = Usuario.findOne({ _id: id }, (err, usuarioEncontrado) => {
+    if (err) {
+      // manejar el error
+    } else {
+      // Luego buscar los grupos asociados al usuario encontrado
+      Grupo.find({ usuario: usuarioEncontrado._id })
+        .populate('usuario') // Cargar el usuario relacionado
+        .exec((err, gruposEncontrados) => {
+          if (err) {
+            // manejar el error
+          } else {
+            res.status(200).json(grupo);
+          }
+        });
+    }
+  });
 };
 
 const crearGrupo = async (req, res) => {
