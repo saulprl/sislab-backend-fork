@@ -3,15 +3,11 @@ const { Grupo } = require('../models');
 
 // obtenerGrupos - paginado - total - populate
 const obtenerGrupos = async (req = request, res = response) => {
-  const { limite = 5, desde = 0 } = req.query;
   const query = { estado: true };
 
   const [total, grupos] = await Promise.all([
     Grupo.countDocuments(query),
-    Grupo.find(query)
-      .populate('usuario', 'nombre')
-      .skip(Number(desde))
-      .limit(Number(limite)),
+    Grupo.find(query).populate('usuario', 'nombre'),
   ]);
 
   res.json({
