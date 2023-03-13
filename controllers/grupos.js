@@ -21,7 +21,7 @@ const obtenerGrupos = async (req = request, res = response) => {
 const obtenerGrupo = async (req, res) => {
   const { id } = req.params;
 
-  const grupo = await Grupo.findById(id).populate('usuario', 'nombre');
+  const grupo = await Grupo.find(id).populate('usuario', 'nombre');
 
   res.json(grupo);
 };
