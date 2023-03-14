@@ -20,7 +20,7 @@ const obtenerGrupos = async (req = request, res = response) => {
 
 const obtenerGrupo = async (req, res = response) => {
   const { id } = req.params;
-  const query = { estado: true };
+  const query = { usuario: id, estado: true };
 
   const [total, grupos] = await Promise.all([
     Grupo.countDocuments(query),
