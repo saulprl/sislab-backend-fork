@@ -16,8 +16,6 @@ const obtenerGrupos = async (req = request, res = response) => {
   });
 };
 
-// obtenergrupo - populate {}
-
 const obtenerGrupo = async (req, res = response) => {
   const { id } = req.params;
   const query = { usuario: id, estado: true };
