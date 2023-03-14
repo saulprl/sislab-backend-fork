@@ -21,9 +21,9 @@ const obtenerGrupos = async (req = request, res = response) => {
 const obtenerGrupo = async (req, res = response) => {
   const { id } = req.params;
 
-  const grupo = await Grupo.find({ usuario: id });
+  const grupos = await Grupo.find({ usuario: id });
 
-  res.json(grupo);
+  res.json({ grupos });
 };
 
 const crearGrupo = async (req, res) => {
