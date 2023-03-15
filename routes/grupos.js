@@ -11,7 +11,15 @@ const {
 
 const { existeGrupoPorId } = require('../helpers/db-validators');
 
-const { validarJWT, validarCampos } = require('../middlewares');
+const {
+  validarJWT,
+  validarCampos,
+  validateCarrera,
+  validateDia,
+  validateHora,
+  validateLaboratorio,
+  validateMateria,
+} = require('../middlewares');
 
 const router = Router();
 
@@ -34,6 +42,12 @@ router.post(
   '/',
   [
     validarJWT,
+    validarCampos,
+    validateCarrera,
+    validateDia,
+    validateHora,
+    validateLaboratorio,
+    validateMateria,
     check('nombre', 'El nombre del grupo es obligatorio').not().isEmpty(),
     check('laboratorio', 'El laboratorio es obligatorio').not().isEmpty(),
     check('carrera', 'La carrera es obligatoria').not().isEmpty(),
@@ -49,8 +63,6 @@ router.post(
       .isInt({ min: 1, max: 30 }),
     check('dia', 'El dia de la semana es obligatorio').not().isEmpty(),
     check('hora', 'La hora es obligatoria').not().isEmpty(),
-
-    validarCampos,
   ],
   crearGrupo
 );
@@ -74,7 +86,7 @@ router.delete(
     validarJWT,
     check('id', 'No es un id de Mongo valido').isMongoId(),
     check('id').custom(existeGrupoPorId),
-    
+
     validarCampos,
   ],
   borrarGrupo

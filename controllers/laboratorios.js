@@ -1,13 +1,11 @@
 const { response, request } = require('express');
 
-const Laboratorio = require('../models/carrera');
+const Laboratorio = require('../models/laboratorio');
 
 const laboratoriosGet = async (req = request, res = response) => {
-  const query = { estado: true };
-
   const [total, laboratorios] = await Promise.all([
-    Laboratorio.countDocuments(query),
-    Laboratorio.find(query),
+    Laboratorio.countDocuments(),
+    Laboratorio.find(),
   ]);
 
   res.json({
