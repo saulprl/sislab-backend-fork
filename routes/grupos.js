@@ -45,7 +45,7 @@ router.post(
     validarCampos,
     validateCarrera,
     validateDia,
-    validateHora,
+    //validateHora,
     validateLaboratorio,
     validateMateria,
     check('nombre', 'El nombre del grupo es obligatorio').not().isEmpty(),
