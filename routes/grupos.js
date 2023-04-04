@@ -63,6 +63,7 @@ router.post(
       .isInt({ min: 1, max: 30 }),
     check('dia', 'El dia de la semana es obligatorio').not().isEmpty(),
     check('hora', 'La hora es obligatoria').not().isEmpty(),
+    validarCampos,
   ],
   crearGrupo
 );

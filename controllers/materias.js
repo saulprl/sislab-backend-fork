@@ -1,6 +1,6 @@
 const { response, request } = require('express');
 
-const Materia = require('../models/carrera');
+const Materia = require('../models/materia');
 
 const materiasGet = async (req = request, res = response) => {
   const [total, materias] = await Promise.all([

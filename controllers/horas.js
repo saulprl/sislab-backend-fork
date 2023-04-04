@@ -1,6 +1,6 @@
 const { response, request } = require('express');
 
-const Hora = require('../models/carrera');
+const Hora = require('../models/hora');
 
 const horasGet = async (req = request, res = response) => {
   const [total, horas] = await Promise.all([
