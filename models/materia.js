@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const MateriaSchema = Schema({
+const MateriaSchema = new Schema({
   materia: {
     type: String,
     required: [true, 'La materia es obligatoria'],

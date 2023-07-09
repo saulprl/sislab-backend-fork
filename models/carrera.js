@@ -1,18 +1,16 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const CarreraSchema = Schema(
-  {
-    carrera: {
-      type: String,
-      required: [true, 'La carrera es obligatoria'],
-    },
-    estado: {
-      type: Boolean,
-      default: true,
-      required: true,
-    }
+const CarreraSchema = new Schema({
+  carrera: {
+    type: String,
+    required: [true, "La carrera es obligatoria"],
   },
-);
+  estado: {
+    type: Boolean,
+    default: true,
+    required: true,
+  },
+});
 
 CarreraSchema.methods.toJSON = function () {
   const { __v, _id, ...carreras } = this.toObject();
@@ -20,4 +18,4 @@ CarreraSchema.methods.toJSON = function () {
   return carreras;
 };
 
-module.exports = model('Carreras', CarreraSchema);
+module.exports = model("Carreras", CarreraSchema);

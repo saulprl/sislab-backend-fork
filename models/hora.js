@@ -1,6 +1,6 @@
 const { Schema, model } = require('mongoose');
 
-const HoraSchema = Schema({
+const HoraSchema = new Schema({
   hora: {
     type: String,
     required: [true, 'El horario es obligatorio'],

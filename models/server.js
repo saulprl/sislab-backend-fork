@@ -19,6 +19,7 @@ class Server {
       laboratorios: "/api/laboratorios",
       materias: "/api/materias",
       practicas: "/api/practicas",
+      solicitudes: "/api/solicitudes",
     };
 
     // Conectar a base de datos
@@ -57,6 +58,7 @@ class Server {
     this.app.use(this.paths.laboratorios, require("../routes/laboratorios"));
     this.app.use(this.paths.materias, require("../routes/materias"));
     this.app.use(this.paths.practicas, require("../routes/practicas"));
+    this.app.use(this.paths.solicitudes, require("../routes/solicitudes"));
   }
 
   listen() {
