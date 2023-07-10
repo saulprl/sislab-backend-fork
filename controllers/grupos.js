@@ -69,8 +69,6 @@ const crearGrupo = async (req, res) => {
   try {
     const grupoDB = await Grupo.findOne({
       laboratorio,
-      carrera,
-      materia,
       dia,
       hora,
       period,
@@ -100,7 +98,10 @@ const crearGrupo = async (req, res) => {
     //Guardar en DB
     await grupo.save();
 
-    res.status(200).json(grupo);
+    res.status(200).json({
+      message: `Se ha creado el grupo correctamente.`,
+      grupo,
+    });
   } catch (error) {
     res.status(500).json({
       message: "Error al crear el grupo",
