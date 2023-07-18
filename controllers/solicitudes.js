@@ -38,6 +38,30 @@ const getRequests = async (req, res) => {
   }
 };
 
+const getPendingRequests = async (req, res) => {
+  const previousMonth = getPreviousMonth();
+
+  try {
+    const requests = await solicitud
+      .find({ requestDate: { $gte: previousMonth } })
+      .populate("profId")
+      .populate("groupId")
+      .populate("assignmentId")
+      .sort({ requestDate: 1 })
+      .exec();
+
+    res.status(200).json({
+      requests,
+      message: `${requests.length} solicitudes encontradas.`,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: "Ocurrió un error al obtener las solicitudes.",
+      error,
+    });
+  }
+};
+
 const getRequestsByProf = async (req, res) => {
   const previousMonth = getPreviousMonth();
 
@@ -99,6 +123,8 @@ const getRequestsByDate = async (req, res) => {
       .sort({ requestDate: 1 })
       .exec();
 
+    requests.sort((a, b) => a.groupId.hora - b.groupId.hora);
+
     res.status(200).json({
       requests,
       message: `${requests.length} solicitudes obtenidas correctamente.`,
@@ -148,6 +174,7 @@ const createRequest = async (req, res) => {
 
 module.exports = {
   getRequests,
+  getPendingRequests,
   getRequestsByProf,
   getRequestsByProfAndDate,
   getRequestsByDate,
