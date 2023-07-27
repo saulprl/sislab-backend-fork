@@ -1,42 +1,34 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const GruposSchema = Schema(
+const GruposSchema = new Schema(
   {
-    nombre: {
-      type: String,
-      required: [true, 'El nombre es obligatorio'],
-    },
     laboratorio: {
       type: String,
-      required: [true, 'El laboratorio es obligatorio'],
+      required: [true, "El laboratorio es obligatorio"],
     },
     carrera: {
       type: String,
-      required: [true, 'La carrera es obligatorio'],
+      required: [true, "La carrera es obligatorio"],
     },
     materia: {
       type: String,
-      required: [true, 'La materia es obligatorio'],
+      required: [true, "La materia es obligatorio"],
     },
-    numAlumnos: {
+    alumnos: {
       type: Number,
-      required: [true, 'El numero de alumnos es obligatorio'],
+      required: [true, "El numero de alumnos es obligatorio"],
     },
-    numEquipos: {
+    equipos: {
       type: Number,
-      required: [true, 'El numero de equipos obligatorio'],
+      required: [true, "El numero de equipos obligatorio"],
     },
-    diaSemana: {
-      type: String,
-      required: [true, 'El dia de la semana es obligatorio'],
+    dia: {
+      type: Number,
+      required: [true, "El dia de la semana es obligatorio"],
     },
-    horaInicial: {
-      type: String,
-      required: [true, 'La hora inicial es obligatoria'],
-    },
-    horaFinal: {
-      type: String,
-      required: [true, 'La hora final es obligatoria'],
+    hora: {
+      type: Number,
+      required: [true, "La hora inicial es obligatoria"],
     },
     estado: {
       type: Boolean,
@@ -45,8 +37,12 @@ const GruposSchema = Schema(
     },
     usuario: {
       type: Schema.Types.ObjectId,
-      ref: 'Usuario',
+      ref: "Usuario",
       required: true,
+    },
+    period: {
+      type: String,
+      required: [true, "El periodo es obligatorio"],
     },
   },
   { timestamps: true }
@@ -58,4 +54,4 @@ GruposSchema.methods.toJSON = function () {
   return grupos;
 };
 
-module.exports = model('Grupos', GruposSchema);
+module.exports = model("Grupos", GruposSchema);

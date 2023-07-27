@@ -1,15 +1,23 @@
-const Role = require('../models/role');
-const Usuario = require('../models/usuario');
-const Grupo = require('../models/grupo');
+const Role = require("../models/role");
+const Usuario = require("../models/usuario");
+const Grupo = require("../models/grupo");
 
-const esRoleValido = async (rol = '') => {
+const esRoleValido = async (rol) => {
+  if (!rol) {
+    throw new Error("El rol es obligatorio");
+  }
+
   const existeRol = await Role.findOne({ rol });
   if (!existeRol) {
     throw new Error(`El rol ${rol} no está registrado en la BD`);
   }
 };
 
-const emailExiste = async (correo = '') => {
+const emailExiste = async (correo) => {
+  if (!correo) {
+    throw new Error("El correo es obligatorio");
+  }
+
   // Verificar si el correo existe
   const existeEmail = await Usuario.findOne({ correo });
   if (existeEmail) {

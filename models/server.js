@@ -13,6 +13,13 @@ class Server {
       buscar: "/api/buscar",
       grupos: "/api/grupos",
       usuarios: "/api/usuarios",
+      carreras: "/api/carreras",
+      dias: "/api/dias",
+      horas: "/api/horas",
+      laboratorios: "/api/laboratorios",
+      materias: "/api/materias",
+      practicas: "/api/practicas",
+      solicitudes: "/api/solicitudes",
     };
 
     // Conectar a base de datos
@@ -45,6 +52,13 @@ class Server {
     this.app.use(this.paths.usuarios, require("../routes/usuarios"));
     this.app.use(this.paths.grupos, require("../routes/grupos"));
     this.app.use(this.paths.buscar, require("../routes/buscar"));
+    this.app.use(this.paths.carreras, require("../routes/carreras"));
+    this.app.use(this.paths.dias, require("../routes/dias"));
+    this.app.use(this.paths.horas, require("../routes/horas"));
+    this.app.use(this.paths.laboratorios, require("../routes/laboratorios"));
+    this.app.use(this.paths.materias, require("../routes/materias"));
+    this.app.use(this.paths.practicas, require("../routes/practicas"));
+    this.app.use(this.paths.solicitudes, require("../routes/solicitudes"));
   }
 
   listen() {

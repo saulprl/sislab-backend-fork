@@ -7,11 +7,20 @@ const {
   obtenerGrupo,
   actualizarGrupo,
   borrarGrupo,
+  getGroupsByPeriod,
 } = require("../controllers/grupos");
 
 const { existeGrupoPorId } = require("../helpers/db-validators");
 
-const { validarJWT, validarCampos } = require("../middlewares");
+const {
+  validarJWT,
+  validarCampos,
+  validateCarrera,
+  validateDia,
+  validateHora,
+  validateLaboratorio,
+  validateMateria,
+} = require("../middlewares");
 
 const router = Router();
 
@@ -20,7 +29,7 @@ router.get("/", obtenerGrupos);
 
 // Obtener una grupo por id - publico
 router.get(
-  "/:id",
+  "/professor/:id",
   [
     check("id", "No es un id de Mongo valido").isMongoId(),
     validarCampos,
@@ -29,30 +38,31 @@ router.get(
   obtenerGrupo
 );
 
+router.get("/period", getGroupsByPeriod);
+
 // Crear grupo - privado - cualquiera con token valido
 router.post(
   "/",
   [
     validarJWT,
-    check("nombre", "El nombre del grupo es obligatorio").not().isEmpty(),
+    validarCampos,
+    validateCarrera,
+    validateLaboratorio,
+    validateMateria,
     check("laboratorio", "El laboratorio es obligatorio").not().isEmpty(),
     check("carrera", "La carrera es obligatoria").not().isEmpty(),
     check("materia", "La materia es obligatoria").not().isEmpty(),
     check(
-      "numAlumnos",
-      "El numero de alumnos tiene que ser mayor que uno"
-    ).isLength({
-      min: 1,
-    }),
-    check(
-      "numEquipos",
-      "El numero de equipos tiene que ser mayor que uno"
-    ).isLength({
-      min: 1,
-    }),
-    check("diaSemana", "El dia de la semana es obligatorio").not().isEmpty(),
-    check("horaInicial", "La hora inicial es obligatoria").not().isEmpty(),
-    check("horaFinal", "La hora final es obligatoria").not().isEmpty(),
+      "alumnos",
+      "El numero de alumnos debe ser mayor que 0 y menor que 100 "
+    )
+      .notEmpty()
+      .isInt({ min: 1, max: 100 }),
+    check("equipos", "El numero de equipos debe ser mayor que 0 y menor que 30")
+      .notEmpty()
+      .isInt({ min: 1, max: 30 }),
+    check("dia", "El dia de la semana es obligatorio").not().isEmpty(),
+    check("hora", "La hora es obligatoria").not().isEmpty(),
     validarCampos,
   ],
   crearGrupo
@@ -77,6 +87,7 @@ router.delete(
     validarJWT,
     check("id", "No es un id de Mongo valido").isMongoId(),
     check("id").custom(existeGrupoPorId),
+
     validarCampos,
   ],
   borrarGrupo
