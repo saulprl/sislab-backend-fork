@@ -3,27 +3,35 @@ const { Grupo } = require("../models");
 
 // obtenerGrupos - paginado - total - populate
 const obtenerGrupos = async (req = request, res = response) => {
-  const query = { estado: true };
+  const query = { status: true };
+  try {
+    const [total, grupos] = await Promise.all([
+      Grupo.countDocuments(query),
+      Grupo.find(query).populate("prof"),
+    ]);
 
-  const [total, grupos] = await Promise.all([
-    Grupo.countDocuments(query),
-    Grupo.find(query).populate("usuario", "nombre"),
-  ]);
-
-  res.json({
-    total,
-    grupos,
-  });
+    res.status(200).json({
+      total,
+      grupos,
+      message: `Total de ${total} grupos obtenidos correctamente`,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Error al obtener los grupos",
+      error: error,
+    });
+  }
 };
 
 const obtenerGrupo = async (req, res = response) => {
   const { id } = req.params;
-  const query = { usuario: id, estado: true };
+  const query = { prof: id, estado: true };
 
   try {
     const [total, grupos] = await Promise.all([
       Grupo.countDocuments(query),
-      Grupo.find({ usuario: id }).populate("usuario").sort({ createdAt: 1 }),
+      Grupo.find({ prof: id }).populate("prof").sort({ createdAt: 1 }),
     ]);
 
     res.status(200).json({
@@ -41,12 +49,12 @@ const obtenerGrupo = async (req, res = response) => {
 
 const getGroupsByPeriod = async (req, res = response) => {
   const { profId, period } = req.query;
-  const query = { usuario: profId, estado: true, period: period };
+  const query = { prof: profId, status: true, period };
 
   try {
     const [total, grupos] = await Promise.all([
       Grupo.countDocuments(query),
-      Grupo.find(query).populate("usuario").sort({ createdAt: 1 }),
+      Grupo.find(query).populate("prof").sort({ createdAt: 1 }),
     ]);
 
     res.status(200).json({
@@ -55,6 +63,7 @@ const getGroupsByPeriod = async (req, res = response) => {
       grupos,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Error al obtener los grupos",
       error: error,
@@ -63,14 +72,14 @@ const getGroupsByPeriod = async (req, res = response) => {
 };
 
 const crearGrupo = async (req, res) => {
-  const { laboratorio, carrera, materia, alumnos, equipos, dia, hora, period } =
+  const { lab, career, signature, students, teams, day, time, prof, period } =
     req.body;
 
   try {
     const grupoDB = await Grupo.findOne({
-      laboratorio,
-      dia,
-      hora,
+      lab,
+      day,
+      time,
       period,
     });
 
@@ -82,14 +91,14 @@ const crearGrupo = async (req, res) => {
 
     //Generar data a guardar
     const data = {
-      laboratorio,
-      carrera,
-      materia,
-      alumnos,
-      equipos,
-      dia,
-      hora,
-      usuario: req.usuario._id,
+      lab,
+      career,
+      signature,
+      students,
+      teams,
+      day,
+      time,
+      prof,
       period,
     };
 
@@ -103,6 +112,7 @@ const crearGrupo = async (req, res) => {
       grupo,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Error al crear el grupo",
       error: error,

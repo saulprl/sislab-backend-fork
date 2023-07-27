@@ -10,10 +10,13 @@ const {
   getGroupsByPeriod,
 } = require("../controllers/grupos");
 
-const { existeGrupoPorId } = require("../helpers/db-validators");
+const {
+  existeGrupoPorId,
+  existeUsuarioPorId,
+} = require("../helpers/db-validators");
 
 const {
-  validarJWT,
+  validateAuth,
   validarCampos,
   validateCarrera,
   validateDia,
@@ -30,11 +33,7 @@ router.get("/", obtenerGrupos);
 // Obtener una grupo por id - publico
 router.get(
   "/professor/:id",
-  [
-    check("id", "No es un id de Mongo valido").isMongoId(),
-    validarCampos,
-    check("id").custom(existeGrupoPorId),
-  ],
+  [check("id").custom(existeUsuarioPorId)],
   obtenerGrupo
 );
 
@@ -44,26 +43,24 @@ router.get("/period", getGroupsByPeriod);
 router.post(
   "/",
   [
-    validarJWT,
-    validarCampos,
+    validateAuth,
     validateCarrera,
     validateLaboratorio,
     validateMateria,
-    check("laboratorio", "El laboratorio es obligatorio").not().isEmpty(),
-    check("carrera", "La carrera es obligatoria").not().isEmpty(),
-    check("materia", "La materia es obligatoria").not().isEmpty(),
+    check("lab", "El laboratorio es obligatorio").not().isEmpty(),
+    check("career", "La carrera es obligatoria").not().isEmpty(),
+    check("signature", "La materia es obligatoria").not().isEmpty(),
     check(
-      "alumnos",
+      "students",
       "El numero de alumnos debe ser mayor que 0 y menor que 100 "
     )
       .notEmpty()
       .isInt({ min: 1, max: 100 }),
-    check("equipos", "El numero de equipos debe ser mayor que 0 y menor que 30")
+    check("teams", "El numero de equipos debe ser mayor que 0 y menor que 30")
       .notEmpty()
       .isInt({ min: 1, max: 30 }),
-    check("dia", "El dia de la semana es obligatorio").not().isEmpty(),
-    check("hora", "La hora es obligatoria").not().isEmpty(),
-    validarCampos,
+    check("day", "El dia de la semana es obligatorio").not().isEmpty(),
+    check("time", "La hora es obligatoria").not().isEmpty(),
   ],
   crearGrupo
 );
@@ -72,7 +69,7 @@ router.post(
 router.put(
   "/:id",
   [
-    validarJWT,
+    validateAuth,
     check("id", "No es un id de Mongo valido").isMongoId(),
     check("id").custom(existeGrupoPorId),
     validarCampos,
@@ -84,7 +81,7 @@ router.put(
 router.delete(
   "/:id",
   [
-    validarJWT,
+    validateAuth,
     check("id", "No es un id de Mongo valido").isMongoId(),
     check("id").custom(existeGrupoPorId),
 

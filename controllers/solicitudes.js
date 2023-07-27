@@ -78,8 +78,10 @@ const getRequestsByProf = async (req, res) => {
       requests,
     });
   } catch (error) {
+    console.log(error);
     res.status(500).json({
       message: "Ocurrió un error al obtener las solicitudes.",
+      error,
     });
   }
 };

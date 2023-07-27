@@ -2,42 +2,42 @@ const { Schema, model } = require("mongoose");
 
 const GruposSchema = new Schema(
   {
-    laboratorio: {
+    lab: {
       type: String,
       required: [true, "El laboratorio es obligatorio"],
     },
-    carrera: {
+    career: {
       type: String,
-      required: [true, "La carrera es obligatorio"],
+      required: [true, "La carrera es obligatoria"],
     },
-    materia: {
+    signature: {
       type: String,
-      required: [true, "La materia es obligatorio"],
+      required: [true, "La materia es obligatoria"],
     },
-    alumnos: {
+    students: {
       type: Number,
       required: [true, "El numero de alumnos es obligatorio"],
     },
-    equipos: {
+    teams: {
       type: Number,
       required: [true, "El numero de equipos obligatorio"],
     },
-    dia: {
+    day: {
       type: Number,
       required: [true, "El dia de la semana es obligatorio"],
     },
-    hora: {
+    time: {
       type: Number,
       required: [true, "La hora inicial es obligatoria"],
     },
-    estado: {
+    status: {
       type: Boolean,
       default: true,
       required: true,
     },
-    usuario: {
-      type: Schema.Types.ObjectId,
-      ref: "Usuario",
+    prof: {
+      type: Schema.Types.String,
+      ref: "User",
       required: true,
     },
     period: {
@@ -48,10 +48,4 @@ const GruposSchema = new Schema(
   { timestamps: true }
 );
 
-GruposSchema.methods.toJSON = function () {
-  const { __v, _id, ...grupos } = this.toObject();
-  grupos.uid = _id;
-  return grupos;
-};
-
-module.exports = model("Grupos", GruposSchema);
+module.exports = model("Group", GruposSchema);

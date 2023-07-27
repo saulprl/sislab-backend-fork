@@ -3,13 +3,13 @@ const { Schema, model } = require("mongoose");
 const SolicitudSchema = new Schema(
   {
     profId: {
-      type: Schema.Types.ObjectId,
-      ref: "Usuario",
+      type: Schema.Types.String,
+      ref: "User",
       required: [true, "El ID del profesor es obligatorio."],
     },
     groupId: {
       type: Schema.Types.ObjectId,
-      ref: "Grupos",
+      ref: "Group",
       required: [true, "El ID del grupo es obligatorio."],
     },
     assignmentId: {

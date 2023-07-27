@@ -40,7 +40,7 @@ const buscarGrupos = async (termino = '', res = response) => {
 
   const grupos = await Grupo.find({
     $or: [{ nombre: regex }],
-    $and: [{ estado: true }],
+    $and: [{ status: true }],
   }).populate('usuario', 'nombre');
 
   res.json({

@@ -1,28 +1,46 @@
-const { response } = require('express');
+const { response } = require("express");
 
-const esAdminRole = (req, res = response, next) => {
-  if (!req.usuario) {
-    return res.status(500).json({
-      msg: 'Se quiere verificar el role sin validar el token primero',
+const Usuario = require("../models/usuario");
+
+const esAdminRole = async (req, res = response, next) => {
+  const { userId } = req.body;
+
+  if (!userId) {
+    return res.status(400).json({
+      message: "No se proporcionó el ID del usuario",
     });
   }
 
-  const { rol, nombre } = req.usuario;
+  try {
+    const dbUser = await Usuario.findById(userId).populate("role");
 
-  if (rol !== 'ADMIN') {
-    return res.status(401).json({
-      msg: `${nombre} no es administrador - No puede hacer esto`,
+    if (!dbUser) {
+      return res.status(400).json({
+        message: "No existe un usuario con ese ID",
+      });
+    }
+
+    if (dbUser.role.name !== "Administrador") {
+      return res.status(401).json({
+        message: "No tiene permisos para realizar esta acción",
+      });
+    }
+
+    next();
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Ocurrió un error al validar la eliminación.",
+      error,
     });
   }
-
-  next();
 };
 
 const tieneRole = (...roles) => {
   return (req, res = response, next) => {
     if (!req.usuario) {
       return res.status(500).json({
-        msg: 'Se quiere verificar el role sin validar el token primero',
+        msg: "Se quiere verificar el role sin validar el token primero",
       });
     }
 

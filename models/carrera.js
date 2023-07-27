@@ -12,10 +12,4 @@ const CarreraSchema = new Schema({
   },
 });
 
-CarreraSchema.methods.toJSON = function () {
-  const { __v, _id, ...carreras } = this.toObject();
-  carreras.uid = _id;
-  return carreras;
-};
-
-module.exports = model("Carreras", CarreraSchema);
+module.exports = model("Carrera", CarreraSchema);
